@@ -7,7 +7,7 @@ ls -la ~/.gradle 2>/dev/null
 #!/bin/bash
 
 # Define the source and target directories
-SOURCE_DIR="${HOME}/.gradle"
+SOURCE_DIR="${HOME}/.gradle/caches"
 TARGET_DIR="./GradleCache"
 
 # Check if the source directory exists
