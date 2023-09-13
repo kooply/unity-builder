@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 echo "*********************************** Updating the Gradle Cache: ****************************************"
+echo "Current Folder:"
 ls -la ~/.gradle 2>/dev/null
 
 #!/bin/bash
@@ -15,11 +16,20 @@ if [[ -d "${SOURCE_DIR}" ]]; then
     mkdir -p "${TARGET_DIR}"
 
     # Try to copy the contents from the source to the target
-    cp -R "${SOURCE_DIR}/." "${TARGET_DIR}/" && echo "Successfully copied contents." || echo "Failed to copy contents."
+    if cp -R "${SOURCE_DIR}/." "${TARGET_DIR}/"; then
+        echo "Successfully copied contents."
+
+        echo -n "Target after copy:"
+        ls -la "${TARGET_DIR}"
+        
+        # Print the size of the copied folder
+        echo -n "Size of the copied folder: "
+        du -sh "${TARGET_DIR}"
+    else
+        echo "Failed to copy contents."
+    fi
 else
     echo "Source directory '${SOURCE_DIR}' does not exist. Nothing to copy."
 fi
-
-ls -la
 
 echo "*******************************************************************************************************"
