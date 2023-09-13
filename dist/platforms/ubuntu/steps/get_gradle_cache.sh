@@ -7,7 +7,7 @@ ls -la
 
 # Define the source and target directories
 SOURCE_DIR="./GradleCache"
-TARGET_DIR="${HOME}/.gradle"
+TARGET_DIR="${HOME}/.gradle/caches"
 
 # Check if the source directory exists
 if [[ -d "${SOURCE_DIR}" ]]; then
