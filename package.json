@@ -7,7 +7,7 @@
   "author": "Webber <webber@takken.io>",
   "license": "MIT",
   "scripts": {
-    "prepare": "lefthook install && npx husky uninstall -y",
+    "prepare": "lefthook install",
     "build": "yarn && tsc && ncc build lib --source-map --license licenses.txt",
     "lint": "prettier --check \"src/**/*.{js,ts}\" && eslint src/**/*.ts",
     "format": "prettier --write \"src/**/*.{js,ts}\"",
