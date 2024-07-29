@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source /steps/cocoapods.sh
+
 #
 # Run steps
 #
