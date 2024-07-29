@@ -79,6 +79,9 @@ if [[ "$RUN_AS_HOST_USER" == "true" ]]; then
 else
   echo "Running as root"
 
+  echo "Showing the Env:"
+  env
+
   # Run as root
   source /steps/runsteps.sh
 fi
