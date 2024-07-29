@@ -23,7 +23,7 @@ source /etc/profile.d/rvm.sh
 
 echo "Installing Ruby..."
 rvm install ruby-3.1.0
-rvm use ruby --default
+rvm --default use ruby-3.1.0
 
 sudo gem install cocoapods
 
