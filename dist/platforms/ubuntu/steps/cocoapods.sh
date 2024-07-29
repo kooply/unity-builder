@@ -34,4 +34,6 @@ echo "==================== Running Cocoa Pods Setup ======================="
 export COCOAPODS_ALLOW_ROOT=1
 pod setup --allow-root
 
+which pod
+
 
