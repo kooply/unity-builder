@@ -82,7 +82,7 @@ else
   echo "Showing the Env:"
   env
 
-  echo "Installing Cocoa Pods
+  echo "Installing Cocoa Pods"
   source cocoapods.sh
 
   # Run as root
