@@ -85,7 +85,7 @@ else
   ls -la
 
   echo "Installing Cocoa Pods"
-  source cocoapods.sh
+  source /cocoapods.sh
 
   # Run as root
   source /steps/runsteps.sh
