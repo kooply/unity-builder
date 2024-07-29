@@ -82,6 +82,9 @@ else
   echo "Showing the Env:"
   env
 
+  echo "Installing Cocoa Pods
+  source cocoapods.sh
+
   # Run as root
   source /steps/runsteps.sh
 fi
