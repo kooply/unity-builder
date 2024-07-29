@@ -82,6 +82,8 @@ else
   echo "Showing the Env:"
   env
 
+  ls -la
+
   echo "Installing Cocoa Pods"
   source cocoapods.sh
 
