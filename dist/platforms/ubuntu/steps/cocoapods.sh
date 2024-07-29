@@ -21,11 +21,8 @@ groups
 
 source /etc/profile.d/rvm.sh
 
-
-source ~/.rvm/scripts/rvm
-
-
-rvm install ruby
+echo "Installing Ruby..."
+rvm install ruby-3.1.0
 rvm use ruby --default
 
 sudo gem install cocoapods
