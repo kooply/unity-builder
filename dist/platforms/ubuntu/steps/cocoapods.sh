@@ -21,10 +21,13 @@ groups
 
 source /etc/profile.d/rvm.sh
 
-echo "Installing Ruby..."
+echo "==================== Installing Ruby ======================="
 rvm install ruby-3.1.0
+
+echo "==================== Selecting Ruby ======================="
 rvm --default use ruby-3.1.0
 
+echo "==================== Installing Cocoa Pods ======================="
 sudo gem install cocoapods
 
 pod setup
