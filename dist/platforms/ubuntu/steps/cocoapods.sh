@@ -30,10 +30,15 @@ rvm --default use ruby-3.1.0
 echo "==================== Installing Cocoa Pods ======================="
 gem install cocoapods
 
+# seems thet cocoapods really wants rsync
+echo "==================== Install Rsync ======================="
+apt-get install rsync
+which rsync
+
 echo "==================== Running Cocoa Pods Setup ======================="
 export COCOAPODS_ALLOW_ROOT=1
 pod setup --allow-root
-
 which pod
+
 
 
