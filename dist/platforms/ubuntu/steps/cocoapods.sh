@@ -32,7 +32,7 @@ gem install cocoapods
 
 # seems thet cocoapods really wants rsync
 echo "==================== Install Rsync ======================="
-apt-get install rsync
+apt-get install -y rsync
 which rsync
 
 echo "==================== Running Cocoa Pods Setup ======================="
