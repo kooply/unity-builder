@@ -56,7 +56,7 @@ ls -la ~/.gradle 2>/dev/null
 
 # Define the source and target directories
 CACHE_TARGET_DIR="./CocoaCache/"
-CACHE_SOURCE_DIR="${HOME}/.cache/CocoaPods"
+CACHE_SOURCE_DIR="${HOME}/Library/Caches/CocoaPods"
 
 # Check if the source directory exists
 if [[ -d "${CACHE_SOURCE_DIR}" ]]; then
