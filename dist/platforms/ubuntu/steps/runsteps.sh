@@ -29,6 +29,7 @@ if [ "$SKIP_ACTIVATION" != "true" ]; then
 fi
 source /steps/return_license.sh
 source /steps/set_gradle_cache.sh
+sourec /steps/set_cocoa_cache.sh
 
 #
 # Instructions for debugging
