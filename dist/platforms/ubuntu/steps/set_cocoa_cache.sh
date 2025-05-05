@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+
+echo "*********************************** Showing Cocoapods Repos and Cache: ****************************************"
+
+if ! pod cache list 2>/dev/null; then
+  echo "Failed to list CocoaPods cache"
+fi
+
+
+if ! pod repo list 2>/dev/null; then
+  echo "Failed to list CocoaPods repos"
+fi
+
+
+
 echo "*********************************** Updating the Cocoapods Repo Cache: ****************************************"
 echo "Current Folder:"
 ls -la ~/.gradle 2>/dev/null
@@ -8,7 +22,7 @@ ls -la ~/.gradle 2>/dev/null
 
 # Define the source and target directories
 REPO_TARGET_DIR="./CocoaSpecs"
-REPO_SOURCE_DIR="${HOME}/.cocoapods/repose"
+REPO_SOURCE_DIR="${HOME}/.cocoapods/repos"
 
 # Check if the source directory exists
 if [[ -d "${REPO_SOURCE_DIR}" ]]; then
