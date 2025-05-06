@@ -5,7 +5,9 @@ source /steps/cocoapods.sh
 #
 # Run steps
 #
+# TODO: only need to run gradle for android builds and cocoa for ios builds, but no big deal
 source /steps/get_gradle_cache.sh
+source /steps/get_cocoa_cache.sh
 source /steps/set_extra_git_configs.sh
 source /steps/set_gitcredential.sh
 
@@ -27,6 +29,7 @@ if [ "$SKIP_ACTIVATION" != "true" ]; then
 fi
 source /steps/return_license.sh
 source /steps/set_gradle_cache.sh
+source /steps/set_cocoa_cache.sh
 
 #
 # Instructions for debugging
