@@ -29,25 +29,19 @@ if [[ -d "${REPO_SOURCE_DIR}" ]]; then
     # Ensure the target directory exists; create if it doesn't
     mkdir -p "${REPO_TARGET_DIR}"
 
-    # tar the source
-    tar -cf "${REPO_TARGET_DIR}/cocoa-repose.tar" -C "${HOME}/.cocoapods" "./repose"
-
-    # show the tarball
-    ls -la "${REPO_TARGET_DIR}/cocoa-repose.tar"
-
     # Try to copy the contents from the source to the target
-    # if cp -R "${REPO_SOURCE_DIR}/." "${REPO_TARGET_DIR}/"; then
-    #     echo "Successfully copied contents."
+    if cp -R "${REPO_SOURCE_DIR}/." "${REPO_TARGET_DIR}/"; then
+        echo "Successfully copied contents."
 
-    #     echo -n "Target after copy:"
-    #     ls -la "${REPO_TARGET_DIR}"
+        echo -n "Target after copy:"
+        ls -la "${REPO_TARGET_DIR}"
         
-    #     # Print the size of the copied folder
-    #     echo -n "Size of the copied folder: "
-    #     du -sh "${REPO_TARGET_DIR}"
-    # else
-    #     echo "Failed to copy contents."
-    # fi
+        # Print the size of the copied folder
+        echo -n "Size of the copied folder: "
+        du -sh "${REPO_TARGET_DIR}"
+    else
+        echo "Failed to copy contents."
+    fi
 else
     echo "Source directory '${REPO_SOURCE_DIR}' does not exist. Nothing to copy."
 fi

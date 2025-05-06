@@ -7,21 +7,15 @@ ls -la
 
 # Define the source and target directories
 REPO_SOURCE_DIR="./CocoaSpecs"
-REPO_TARGET_DIR="${HOME}/.cocoapods"
+REPO_TARGET_DIR="${HOME}/.cocoapods/repose"
 
 # Check if the source directory exists
 if [[ -d "${REPO_SOURCE_DIR}" ]]; then
     # Ensure the target directory exists; create if it doesn't
     mkdir -p "${REPO_TARGET_DIR}"
 
-    # open the tar
-    cd $REPO_TARGET_DIR
-    pwd        
-    tar -xvf "${REPO_SOURCE_DIR}/cocoa-repose.tar"
-    ls -la
-
     # Try to copy the contents from the source to the target
-    #cp -R "${REPO_SOURCE_DIR}/." "${REPO_TARGET_DIR}/" && echo "Successfully copied contents." || echo "Failed to copy contents."
+    cp -R "${REPO_SOURCE_DIR}/." "${REPO_TARGET_DIR}/" && echo "Successfully copied contents." || echo "Failed to copy contents."
 else
     echo "Source directory '${REPO_SOURCE_DIR}' does not exist. Nothing to copy."
 fi
