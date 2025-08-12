@@ -43,4 +43,6 @@ else
     echo "Source directory '${CACHE_SOURCE_DIR}' does not exist. Nothing to copy."
 fi
 
+df -h
+
 echo "******************************************************************************************************"
