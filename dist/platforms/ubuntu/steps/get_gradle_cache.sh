@@ -9,7 +9,7 @@ ls -la
 SOURCE_DIR="./GradleCache"
 TARGET_DIR="${HOME}/.gradle/caches"
 
-# Check if the source directory exists
+# Check if the source directory exists1
 if [[ -d "${SOURCE_DIR}" ]]; then
     # Ensure the target directory exists; create if it doesn't
     mkdir -p "${TARGET_DIR}"
@@ -19,5 +19,7 @@ if [[ -d "${SOURCE_DIR}" ]]; then
 else
     echo "Source directory '${SOURCE_DIR}' does not exist. Nothing to copy."
 fi
+
+df -h
 
 echo "******************************************************************************************************"

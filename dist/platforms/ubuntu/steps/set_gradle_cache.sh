@@ -32,4 +32,6 @@ else
     echo "Source directory '${SOURCE_DIR}' does not exist. Nothing to copy."
 fi
 
+df -h
+
 echo "*******************************************************************************************************"
