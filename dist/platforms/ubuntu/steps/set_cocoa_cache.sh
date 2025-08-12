@@ -16,7 +16,7 @@ fi
 
 echo "*********************************** Updating the Cocoapods Repo Cache: ****************************************"
 echo "Current Folder:"
-ls -la ~/.gradle 2>/dev/null
+ls -la ~/.cocoapods 2>/dev/null
 
 #!/bin/bash
 
@@ -50,13 +50,13 @@ echo "**************************************************************************
 
 echo "*********************************** Updating the Cocoapods Cache: ****************************************"
 echo "Current Folder:"
-ls -la ~/.gradle 2>/dev/null
+ls -la ~/.cache/CocoaPods 2>/dev/null
 
 #!/bin/bash
 
 # Define the source and target directories
 CACHE_TARGET_DIR="./CocoaCache/"
-CACHE_SOURCE_DIR="${HOME}/Library/Caches/CocoaPods"
+CACHE_SOURCE_DIR="${HOME}/.cache/CocoaPods"
 
 # Check if the source directory exists
 if [[ -d "${CACHE_SOURCE_DIR}" ]]; then
@@ -79,5 +79,7 @@ if [[ -d "${CACHE_SOURCE_DIR}" ]]; then
 else
     echo "Source directory '${CACHE_SOURCE_DIR}' does not exist. Nothing to copy."
 fi
+
+df -h
 
 echo "*******************************************************************************************************"

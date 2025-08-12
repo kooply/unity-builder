@@ -7,7 +7,7 @@ ls -la
 
 # Define the source and target directories
 REPO_SOURCE_DIR="./CocoaSpecs"
-REPO_TARGET_DIR="${HOME}/.cocoapods/repose"
+REPO_TARGET_DIR="${HOME}/.cocoapods/repos"
 
 # Check if the source directory exists
 if [[ -d "${REPO_SOURCE_DIR}" ]]; then
@@ -42,5 +42,7 @@ if [[ -d "${CACHE_SOURCE_DIR}" ]]; then
 else
     echo "Source directory '${CACHE_SOURCE_DIR}' does not exist. Nothing to copy."
 fi
+
+df -h
 
 echo "******************************************************************************************************"
