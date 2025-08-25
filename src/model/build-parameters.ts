@@ -101,9 +101,17 @@ class BuildParameters {
   }
 
   static async create(): Promise<BuildParameters> {
+    core.info('🔍 Parsing build file...');
     const buildFile = this.parseBuildFile(Input.buildName, Input.targetPlatform, Input.androidExportType);
+
+    core.info('🔍 Determining Unity version...');
     const editorVersion = UnityVersioning.determineUnityVersion(Input.projectPath, Input.unityVersion);
+
+    core.info('🔍 Starting versioning operations (this may take a while for large repositories)...');
     const buildVersion = await Versioning.determineBuildVersion(Input.versioningStrategy, Input.specifiedVersion);
+    core.info('✅ Versioning operations completed');
+
+    core.info('🔍 Determining Android version code...');
     const androidVersionCode = AndroidVersioning.determineVersionCode(buildVersion, Input.androidVersionCode);
     const androidSdkManagerParameters = AndroidVersioning.determineSdkManagerParameters(Input.androidTargetSdkVersion);
 

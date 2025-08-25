@@ -69,20 +69,38 @@ export default class Versioning {
   }
 
   static async determineBuildVersion(strategy: string, inputVersion: string): Promise<string> {
+    core.info(`🔍 Versioning strategy: ${strategy}`);
+
     // Validate input
     if (!Object.hasOwnProperty.call(this.strategies, strategy)) {
       throw new ValidationError(`Versioning strategy should be one of ${Object.values(this.strategies).join(', ')}.`);
     }
 
     switch (strategy) {
-      case this.strategies.None:
+      case this.strategies.None: {
+        core.info('✅ Using "None" versioning strategy');
+
         return 'none';
-      case this.strategies.Custom:
+      }
+      case this.strategies.Custom: {
+        core.info(`✅ Using "Custom" versioning strategy with version: ${inputVersion}`);
+
         return inputVersion;
-      case this.strategies.Semantic:
-        return await this.generateSemanticVersion();
-      case this.strategies.Tag:
-        return await this.generateTagVersion();
+      }
+      case this.strategies.Semantic: {
+        core.info('🔍 Generating semantic version...');
+        const semanticVersion = await this.generateSemanticVersion();
+        core.info(`✅ Generated semantic version: ${semanticVersion}`);
+
+        return semanticVersion;
+      }
+      case this.strategies.Tag: {
+        core.info('🔍 Generating tag version...');
+        const tagVersion = await this.generateTagVersion();
+        core.info(`✅ Generated tag version: ${tagVersion}`);
+
+        return tagVersion;
+      }
       default:
         throw new NotImplementedException(`Strategy ${strategy} is not implemented.`);
     }
@@ -99,23 +117,32 @@ export default class Versioning {
    * @See: https://semver.org/
    */
   static async generateSemanticVersion() {
+    core.info('🔍 Checking if repository is shallow...');
     if (await this.isShallow()) {
+      core.info('Repository is shallow, will need to fetch full history');
       await this.fetch();
+    } else {
+      core.info('Repository is not shallow, proceeding');
     }
 
+    core.info('🔍 Logging diff...');
     await this.logDiff();
 
+    core.info('🔍 Checking if repository is dirty...');
     if ((await this.isDirty()) && !Input.allowDirtyBuild) {
       throw new Error('Branch is dirty. Refusing to base semantic version on uncommitted changes');
     }
 
+    core.info('🔍 Checking for version tags...');
     if (!(await this.hasAnyVersionTags())) {
+      core.info('🔍 Getting total number of commits for fallback version...');
       const version = `0.0.${await this.getTotalNumberOfCommits()}`;
       core.info(`Generated version ${version} (no version tags found).`);
 
       return version;
     }
 
+    core.info('🔍 Parsing semantic version...');
     const versionDescriptor = await this.parseSemanticVersion();
     if (versionDescriptor) {
       const { tag, commits, hash } = versionDescriptor;
@@ -129,6 +156,7 @@ export default class Versioning {
       return `${threeDigitVersion}`;
     }
 
+    core.info('🔍 Getting total number of commits for fallback version...');
     const version = `0.0.${await this.getTotalNumberOfCommits()}`;
     core.info(`Generated version ${version} (semantic version couldn't be determined).`);
 
@@ -152,7 +180,10 @@ export default class Versioning {
    * Parses the versionDescription into their named parts.
    */
   static async parseSemanticVersion() {
+    core.info('🔍 Getting version description (this involves multiple git operations)...');
     const description = await this.getVersionDescription();
+    core.info(`✅ Got version description: ${description}`);
+
     for (const descriptionRegex of Versioning.descriptionRegexes) {
       try {
         const [match, tag, commits, hash] = descriptionRegex.exec(description) as RegExpExecArray;
@@ -191,10 +222,14 @@ export default class Versioning {
    */
   static async fetch() {
     try {
+      core.info('🔍 Running git fetch --unshallow (this can take a very long time for large repositories)...');
       await this.git(['fetch', '--unshallow']);
+      core.info('✅ git fetch --unshallow completed');
     } catch (error) {
       core.warning(`Fetch --unshallow caught: ${error}`);
+      core.info('🔍 Fallback: Running git fetch...');
       await this.git(['fetch']);
+      core.info('✅ git fetch completed');
     }
   }
 
@@ -207,19 +242,28 @@ export default class Versioning {
    * identifies the current commit.
    */
   static async getVersionDescription() {
+    core.info('🔍 Running git tag --list --merged HEAD --sort=-creatordate...');
     const versionTags = (await this.git(['tag', '--list', '--merged', 'HEAD', '--sort=-creatordate']))
       .split('\n')
       .filter((tag) => new RegExp(this.grepCompatibleInputVersionRegex).test(tag));
 
+    core.info('✅ git tag operation completed');
+
     if (versionTags.length === 0) {
       core.warning('No valid version tags found. Using fallback description.');
+      core.info('🔍 Running git describe --long --tags --always HEAD...');
+      const result = await this.git(['describe', '--long', '--tags', '--always', 'HEAD']);
+      core.info('✅ git describe fallback completed');
 
-      return this.git(['describe', '--long', '--tags', '--always', 'HEAD']);
+      return result;
     }
 
     const latestVersionTag = versionTags[0];
+    core.info('🔍 Running git rev-list --count...');
     const commitsCount = (await this.git(['rev-list', `${latestVersionTag}..HEAD`, '--count'])).trim();
+    core.info('🔍 Running git rev-parse --short HEAD...');
     const commitHash = (await this.git(['rev-parse', '--short', 'HEAD'])).trim();
+    core.info('✅ Version description git operations completed');
 
     return `${latestVersionTag}-${commitsCount}-g${commitHash}`;
   }
