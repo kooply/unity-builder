@@ -16,14 +16,21 @@ async function runMain() {
 
     const { workspace, actionFolder } = Action;
 
+    core.info('🔍 Starting BuildParameters.create()...');
     const buildParameters = await BuildParameters.create();
+    core.info('✅ BuildParameters.create() completed');
+
+    core.info('🔍 Creating ImageTag...');
     const baseImage = new ImageTag(buildParameters);
+    core.info('✅ ImageTag created');
 
     let exitCode = -1;
 
     if (buildParameters.providerStrategy === 'local') {
       core.info('Building locally');
+      core.info('🔍 Starting PlatformSetup.setup()...');
       await PlatformSetup.setup(buildParameters, actionFolder);
+      core.info('✅ PlatformSetup.setup() completed');
       exitCode =
         process.platform === 'darwin'
           ? await MacBuilder.run(actionFolder)
