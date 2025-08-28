@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 
-# if blankproject folder doesn't exist create it
-if [ ! -d "/BlankProject" ]; then
-  mkdir /BlankProject
+# Copy BlankProject template to working location
+echo "Setting up BlankProject for Unity activation..."
+if [ -d "/BlankProjectTemplate" ]; then
+  echo "Copying BlankProject template to working directory..."
+  cp -r /BlankProjectTemplate /BlankProject
+  echo "BlankProject copied successfully"
+else
+  echo "Warning: BlankProjectTemplate not found, creating minimal structure..."
+  mkdir -p /BlankProject/Assets
 fi
-# if blankproject folder doesn't exist create it
-if [ ! -d "/BlankProject/Assets" ]; then
-  mkdir /BlankProject/Assets
-fi
+
+# Ensure BlankProject is writable
+chmod -R u+w /BlankProject
 
 if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
   #
