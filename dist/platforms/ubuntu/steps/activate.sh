@@ -4,15 +4,15 @@
 echo "Setting up BlankProject for Unity activation..."
 if [ -d "/BlankProjectTemplate" ]; then
   echo "Copying BlankProject template to working directory..."
-  cp -r /BlankProjectTemplate /BlankProject
+  cp -r /BlankProjectTemplate /tmp/BlankProject
   echo "BlankProject copied successfully"
 else
   echo "Warning: BlankProjectTemplate not found, creating minimal structure..."
-  mkdir -p /BlankProject/Assets
+  mkdir -p /tmp/BlankProject/Assets
 fi
 
 # Ensure BlankProject is writable
-chmod -R u+w /BlankProject
+chmod -R u+w /tmp/BlankProject
 
 if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
   #
@@ -38,7 +38,7 @@ if [[ -n "$UNITY_SERIAL" && -n "$UNITY_EMAIL" && -n "$UNITY_PASSWORD" ]]; then
       -serial "$UNITY_SERIAL" \
       -username "$UNITY_EMAIL" \
       -password "$UNITY_PASSWORD" \
-      -projectPath "/BlankProject"
+      -projectPath "/tmp/BlankProject"
 
     # Store the exit code from the verify command
     UNITY_EXIT_CODE=$?
