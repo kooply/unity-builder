@@ -12,8 +12,14 @@ export async function runMain() {
     Cache.verify();
 
     const { workspace, actionFolder } = Action;
+
+    core.info('🔍 Starting BuildParameters.create()...');
     const buildParameters = await BuildParameters.create();
+    core.info('✅ BuildParameters.create() completed');
+
+    core.info('🔍 Creating ImageTag...');
     const baseImage = new ImageTag(buildParameters);
+    core.info('✅ ImageTag created');
 
     // Load optional plugin. The default implementation is @game-ci/orchestrator.
     const plugin = await loadPlugin();
@@ -62,7 +68,9 @@ async function runLocalBuild(
 ): Promise<number> {
   await plugin?.beforeLocalBuild(workspace);
 
+  core.info('🔍 Starting PlatformSetup.setup()...');
   await PlatformSetup.setup(buildParameters, actionFolder);
+  core.info('✅ PlatformSetup.setup() completed');
   const exitCode =
     process.platform === 'darwin'
       ? await MacBuilder.run(actionFolder)
