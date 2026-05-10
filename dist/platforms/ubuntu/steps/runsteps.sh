@@ -1,7 +1,27 @@
 #!/usr/bin/env bash
 
 #
-# Run steps
+# Platform-specific tool installation
+#
+echo "Build target: $BUILD_TARGET"
+
+if [[ "$BUILD_TARGET" == "iOS" ]]; then
+  echo "Installing CocoaPods for iOS build..."
+  source /steps/cocoapods.sh
+  source /steps/get_cocoa_cache.sh
+else
+  echo "Skipping CocoaPods installation (not iOS build)"
+fi
+
+if [[ "$BUILD_TARGET" == "Android" ]]; then
+  echo "Setting up Gradle cache for Android build..."
+  source /steps/get_gradle_cache.sh
+else
+  echo "Skipping Gradle cache setup (not Android build)"
+fi
+
+#
+# Run common steps
 #
 source /steps/set_extra_git_configs.sh
 source /steps/set_gitcredential.sh
@@ -21,6 +41,23 @@ source /steps/build.sh
 
 if [ "$SKIP_ACTIVATION" != "true" ]; then
   source /steps/return_license.sh
+fi
+
+#
+# Platform-specific cache saving
+#
+if [[ "$BUILD_TARGET" == "Android" ]]; then
+  echo "Saving Gradle cache for Android build..."
+  source /steps/set_gradle_cache.sh
+else
+  echo "Skipping Gradle cache saving (not Android build)"
+fi
+
+if [[ "$BUILD_TARGET" == "iOS" ]]; then
+  echo "Saving CocoaPods cache for iOS build..."
+  source /steps/set_cocoa_cache.sh
+else
+  echo "Skipping CocoaPods cache saving (not iOS build)"
 fi
 
 #
