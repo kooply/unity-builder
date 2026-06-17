@@ -28,6 +28,7 @@ echo "==================== Selecting Ruby ======================="
 rvm --default use ruby-3.1.0
 
 echo "==================== Installing Cocoa Pods ======================="
+gem install i18n -v '< 1.15'
 gem install cocoapods
 
 # seems thet cocoapods really wants rsync
@@ -40,5 +41,3 @@ export COCOAPODS_ALLOW_ROOT=1
 pod setup --allow-root
 
 which pod
-
-
