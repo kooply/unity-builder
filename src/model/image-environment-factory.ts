@@ -53,6 +53,7 @@ class ImageEnvironmentFactory {
       { name: 'BUILD_FILE', value: parameters.buildFile },
       { name: 'BUILD_METHOD', value: parameters.buildMethod },
       { name: 'MANUAL_EXIT', value: parameters.manualExit },
+      { name: 'BUILD_MAX_ATTEMPTS', value: parameters.buildMaxAttempts },
       { name: 'ENABLE_GPU', value: parameters.enableGpu },
       { name: 'VERSION', value: parameters.buildVersion },
       { name: 'ANDROID_VERSION_CODE', value: parameters.androidVersionCode },

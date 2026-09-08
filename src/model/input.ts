@@ -132,6 +132,12 @@ class Input {
     return input === 'true';
   }
 
+  static get buildMaxAttempts(): string {
+    const input = Number.parseInt(Input.getInput('buildMaxAttempts') ?? '', 10);
+
+    return Number.isFinite(input) && input > 0 ? input.toString() : '3';
+  }
+
   static get enableGpu(): boolean {
     const input = Input.getInput('enableGpu') ?? false;
 
