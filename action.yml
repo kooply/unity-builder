@@ -38,6 +38,10 @@ inputs:
     required: false
     default: ''
     description: 'Suppresses `-quit`. Exit your build method using `EditorApplication.Exit(0)` instead.'
+  buildMaxAttempts:
+    required: false
+    default: '3'
+    description: 'How many times to run the Unity build before giving up. A failed build is retried only when its log matches a transient git/UPM package-resolution failure (network flake); a genuine build/compile error is never retried. 1 disables retrying.'
   enableGpu:
     required: false
     default: ''

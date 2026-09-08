@@ -286,6 +286,7 @@ class BuildParameters {
     buildMethod;
     buildVersion;
     manualExit;
+    buildMaxAttempts;
     enableGpu;
     androidVersionCode;
     androidKeystoreName;
@@ -380,6 +381,7 @@ class BuildParameters {
             buildMethod: input_1.default.buildMethod,
             buildVersion,
             manualExit: input_1.default.manualExit,
+            buildMaxAttempts: input_1.default.buildMaxAttempts,
             enableGpu: input_1.default.enableGpu,
             androidVersionCode,
             androidKeystoreName: input_1.default.androidKeystoreName,
@@ -713,6 +715,7 @@ class ImageEnvironmentFactory {
             { name: 'BUILD_FILE', value: parameters.buildFile },
             { name: 'BUILD_METHOD', value: parameters.buildMethod },
             { name: 'MANUAL_EXIT', value: parameters.manualExit },
+            { name: 'BUILD_MAX_ATTEMPTS', value: parameters.buildMaxAttempts },
             { name: 'ENABLE_GPU', value: parameters.enableGpu },
             { name: 'VERSION', value: parameters.buildVersion },
             { name: 'ANDROID_VERSION_CODE', value: parameters.androidVersionCode },
@@ -1263,6 +1266,10 @@ class Input {
         const input = Input.getInput('manualExit') ?? false;
         return input === 'true';
     }
+    static get buildMaxAttempts() {
+        const input = Number.parseInt(Input.getInput('buildMaxAttempts') ?? '', 10);
+        return Number.isFinite(input) && input > 0 ? input.toString() : '3';
+    }
     static get enableGpu() {
         const input = Input.getInput('enableGpu') ?? false;
         return input === 'true';
@@ -1755,6 +1762,7 @@ class SetupMac {
         process.env.CUSTOM_PARAMETERS = buildParameters.customParameters;
         process.env.CHOWN_FILES_TO = buildParameters.chownFilesTo;
         process.env.MANUAL_EXIT = buildParameters.manualExit.toString();
+        process.env.BUILD_MAX_ATTEMPTS = buildParameters.buildMaxAttempts;
         process.env.ENABLE_GPU = buildParameters.enableGpu.toString();
     }
 }
