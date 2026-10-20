@@ -672,6 +672,14 @@ exports["default"] = GitHub;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+// Android signing secrets go by name with the value in the exec env, as multi-line values do,
+// because Docker.run logs the full docker command (D111-0b).
+const passedByName = new Set([
+    'ANDROID_KEYSTORE_BASE64',
+    'ANDROID_KEYSTORE_PASS',
+    'ANDROID_KEYALIAS_NAME',
+    'ANDROID_KEYALIAS_PASS',
+]);
 class ImageEnvironmentFactory {
     static getEnvVarString(parameters, additionalVariables = []) {
         const environmentVariables = ImageEnvironmentFactory.getEnvironmentVariables(parameters, additionalVariables);
@@ -681,7 +689,7 @@ class ImageEnvironmentFactory {
                 continue;
             }
             const valueAsString = typeof p.value === 'string' ? p.value : String(p.value);
-            if (p.name !== 'ANDROID_KEYSTORE_BASE64' && valueAsString.includes(`\n`)) {
+            if (passedByName.has(p.name) || valueAsString.includes(`\n`)) {
                 string += `--env ${p.name} `;
                 process.env[p.name] = valueAsString;
                 continue;
