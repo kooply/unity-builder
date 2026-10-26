@@ -145,12 +145,18 @@ unity-editor \
   $CUSTOM_PARAMETERS | tee "$UNITY_LOG"
 
 # Catch exit code
-BUILD_EXIT_CODE=${PIPESTATUS[0]}
+PIPE_STATUS=("${PIPESTATUS[@]}")
+BUILD_EXIT_CODE=${PIPE_STATUS[0]}
 
 # Unity ignores an immutable package's asset whose GUID another package also has, and still exits 0 (Dash 4.96 RC1 font, D2802).
-if [ $BUILD_EXIT_CODE -eq 0 ] && grep -qF "immutable folder. The asset will be ignored" "$UNITY_LOG"; then
-  echo "::error::Unity ignored assets in immutable packages (duplicate GUID); search this log for 'conflicts with'"
-  BUILD_EXIT_CODE=1
+# Pass only on a captured log that grep finds clean (status 1); a failed capture or grep fails the build too (review F1).
+if [ $BUILD_EXIT_CODE -eq 0 ]; then
+  grep -qF "immutable folder. The asset will be ignored" "$UNITY_LOG"
+  GREP_STATUS=$?
+  if [ ${PIPE_STATUS[1]} -ne 0 ] || [ $GREP_STATUS -ne 1 ]; then
+    echo "::error::Unity ignored assets in immutable packages (duplicate GUID), or its log could not be checked; search this log for 'conflicts with'"
+    BUILD_EXIT_CODE=1
+  fi
 fi
 
 # Display results
