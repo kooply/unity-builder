@@ -120,6 +120,8 @@ echo ""
 
 # Reference: https://docs.unity3d.com/2019.3/Documentation/Manual/CommandLineArguments.html
 
+UNITY_LOG=$(mktemp)
+
 unity-editor \
   -logfile /dev/stdout \
   $( [ "${MANUAL_EXIT}" == "true" ] || echo "-quit" ) \
@@ -140,10 +142,16 @@ unity-editor \
   -androidTargetSdkVersion "$ANDROID_TARGET_SDK_VERSION" \
   -androidExportType "$ANDROID_EXPORT_TYPE" \
   -androidSymbolType "$ANDROID_SYMBOL_TYPE" \
-  $CUSTOM_PARAMETERS
+  $CUSTOM_PARAMETERS | tee "$UNITY_LOG"
 
 # Catch exit code
-BUILD_EXIT_CODE=$?
+BUILD_EXIT_CODE=${PIPESTATUS[0]}
+
+# Unity ignores an immutable package's asset whose GUID another package also has, and still exits 0 (Dash 4.96 RC1 font, D2802).
+if [ $BUILD_EXIT_CODE -eq 0 ] && grep -qF "immutable folder. The asset will be ignored" "$UNITY_LOG"; then
+  echo "::error::Unity ignored assets in immutable packages (duplicate GUID); search this log for 'conflicts with'"
+  BUILD_EXIT_CODE=1
+fi
 
 # Display results
 if [ $BUILD_EXIT_CODE -eq 0 ]; then
